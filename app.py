@@ -29,12 +29,16 @@ NICE = {
     "po": "Purchase Orders", "sup": "Suppliers",
 }
 
+# Cloud Optimization: Cache raw disk reads so they only run once
+@st.cache_data
+def load_disk(path):
+    return pd.read_csv(path, encoding="utf-8-sig")
+
 def get_table(key):
     if key in st.session_state.tables:
         return st.session_state.tables[key]
-    return pd.read_csv(DISK[key], encoding="utf-8-sig")
+    return load_disk(DISK[key])
 
-# CHANGE 1: the guide now shows the EXACT file name from the Raw folder
 def ask(key, why, tab_id):
     fname = DISK[key].split("/")[-1]
     st.markdown(f"**📄 {NICE[key]}** — _file name: `{fname}` — {why}_")
@@ -54,7 +58,11 @@ def build_suspects(sales, pm):
     ps = ps.merge(pm[["Product_ID", "Product_Name", "Product_Family"]], on="Product_ID", how="left")
     return ps.sort_values("return_rate", ascending=False)
 
-forecast_model = joblib.load("models/stockout_forecast_model.pkl")
+@st.cache_resource
+def load_model():
+    return joblib.load("models/stockout_forecast_model.pkl")
+
+forecast_model = load_model()
 
 # ---------- Sidebar: status + map + reset ----------
 st.sidebar.header("🗂 Data Status")
@@ -64,7 +72,6 @@ if live:
 else:
     st.sidebar.info("All tables from disk (last saved month).")
 
-# CHANGE 3: permanent map — which file feeds which tab
 st.sidebar.markdown("""
 **Which file updates which tab?**
 - `Sales_Transactions.csv` → Boss View, Detective, Root-Cause
@@ -95,7 +102,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 # ---------- TAB 1 ----------
 with tab1:
-    with st.expander("📥 Update the data this tab uses", expanded=True):   # CHANGE 2: open by default
+    with st.expander("📥 Update the data this tab uses", expanded=True):
         ask("sales", "customer refunds and quality returns are counted from sales rows.", "tab1")
         ask("qual", "factory scrap loss (Estimated_Loss_EGP) comes from QC inspection records.", "tab1")
         ask("printing", "rework cost and wasted ink are counted from printing batches.", "tab1")
