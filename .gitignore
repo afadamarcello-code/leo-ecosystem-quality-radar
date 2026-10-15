@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Uncomment ONLY if challenge rules forbid sharing the raw CSVs:
+# Data/Raw/
