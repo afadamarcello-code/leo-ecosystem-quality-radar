@@ -1,0 +1,35 @@
+table Dim_Issue
+	lineageTag: e3a92961-1d6f-4a0f-8599-2ab71be72967
+
+	column Issue_Type
+		dataType: string
+		lineageTag: 782fdef6-b170-4d0c-80c7-903c1e0e502b
+		summarizeBy: none
+		sourceColumn: Issue_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Issue Category'
+		dataType: string
+		lineageTag: e9346a78-91e0-4f0e-a669-865b8a2d5e0e
+		summarizeBy: none
+		sourceColumn: Issue Category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Issue = m
+		mode: import
+		source =
+				let
+				    Source = Customer_Service,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Issue_Type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Added Conditional Column" = Table.AddColumn(#"Removed Duplicates", "Custom", each if [Issue_Type] = "Size guidance" then "Pre-purchase information" else if [Issue_Type] = "General product question" then "Pre-purchase information" else if [Issue_Type] = "Order status" then "Post-purchase service" else if [Issue_Type] = "Payment" then "Post-purchase service" else if [Issue_Type] = "Return request" then "Returns & quality" else if [Issue_Type] = "Exchange request" then "Returns & quality" else if [Issue_Type] = "Product quality" then "Returns & quality" else if [Issue_Type] = "Wholesale inquiry" then "Revenue opportunity" else "Other"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column",{{"Custom", "Issue Category"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,12 @@
+relationship AutoDetected_a6b44562-230d-438c-9345-9a61804eae30
+	fromColumn: Customer_Service.Issue_Type
+	toColumn: Dim_Issue.Issue_Type
+
+relationship 995a764f-6cc6-2b66-c643-8539b05d3768
+	fromColumn: Customer_Service.Open_Date
+	toColumn: Dim_Date.Date
+
+relationship 94d81b72-9391-15f2-e895-1a21a0df3a48
+	fromColumn: Customers.Join_Date
+	toColumn: Dim_Date.Date
+

@@ -1,0 +1,139 @@
+table _Measures
+	lineageTag: 1425d890-6a8e-492d-b7b3-2c9afa70b03d
+
+	measure 'Total Tickets' = COUNTROWS(Customer_Service)
+		formatString: 0
+		lineageTag: 8b160cfc-9ce6-4a24-a445-0a1c0d963310
+
+	measure 'Avg CSAT' = AVERAGE ( Customer_Service[CSAT_1_to_5] )
+		formatString: 0.00
+		lineageTag: 23bbd731-f2b9-4f09-a12c-70a47a42e56f
+
+	measure 'Low CSAT Tickets' =
+			
+			CALCULATE ( [Total Tickets], Customer_Service[CSAT_1_to_5] <= 3 )
+		formatString: 0
+		lineageTag: 6e62d351-7a6e-431b-b5af-3119116339d9
+
+	measure 'Low CSAT Rate' = DIVIDE ( [Low CSAT Tickets], [Total Tickets] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 91c5289d-40b1-4326-bf95-063e521c5f14
+
+	measure 'Unresolved Tickets' =
+			
+			CALCULATE ( [Total Tickets], Customer_Service[Resolved] = "No" )
+		formatString: 0
+		lineageTag: 86a5b5ef-76e5-403a-9148-9f0fffb5482c
+
+	measure 'Unresolved Rate' = DIVIDE ( [Unresolved Tickets], [Total Tickets] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 1ebaa70a-cf70-44cf-8c57-418164553c06
+
+	measure 'Avg First Response Min' = AVERAGE ( Customer_Service[First_Response_Minutes] )
+		formatString: 0.00
+		lineageTag: 9d7c6c22-29af-47b9-9035-032ae8e11b95
+
+	measure 'Avg Resolution Hours' = AVERAGE ( Customer_Service[Resolution_Hours] )
+		formatString: 0.00
+		lineageTag: fb9d5afc-d63b-45a0-98f4-97face4dd456
+
+	measure 'Return Exchange Tickets' =
+			
+			CALCULATE([Total Tickets], Dim_Issue[Issue_Type] IN{"Return request", "Exchange request" })
+		formatString: 0
+		lineageTag: b34130f7-2cfa-4ed9-a889-672e2c41d14f
+
+	measure 'Wholesale Inquiries' =
+			
+			CALCULATE ( [Total Tickets], Customer_Service[Issue_Type] = "Wholesale inquiry" )
+		formatString: 0
+		lineageTag: c64c990e-e5a2-45a7-a363-962a0f0bd777
+
+	measure 'Total Customers' = COUNTROWS ( Customers )
+		formatString: 0
+		lineageTag: 19a2856c-2fcf-49b0-81aa-25a4c202e8a6
+
+	measure 'Wholesale Customers' =
+			
+			CALCULATE ( [Total Customers], Customers[Customer_Type] = "Wholesale" )
+		formatString: 0
+		lineageTag: d40ad591-1328-4c9c-8239-4e481b2e8234
+
+	measure 'Opted-In Wholesale Customers' =
+			
+			CALCULATE ( [Wholesale Customers], Customers[Consent_Status] = "Opted-in" )
+		formatString: 0
+		lineageTag: 4dc2cd13-55ef-4e9f-82ad-b5a3f92f4d64
+
+	measure 'Previous Month Tickets' = CALCULATE([Total Tickets], DATEADD(Dim_Date[Date],-1,MONTH))
+		formatString: 0
+		lineageTag: 2cc8daf6-8d0c-46c6-ab3a-d06456c3dd7b
+
+	measure 'MoM Change' =
+			
+			DIVIDE ( [Total Tickets] - [Previous Month Tickets], [Previous Month Tickets] )
+		lineageTag: 9627a4bd-6b40-4492-b6c5-7d0e8f40fa1e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Resolved Rate' = 1 - [Unresolved Rate]
+		lineageTag: 9e5df3d4-b387-417e-9c9c-5bfc27286a5b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Wholesale Low CSAT Rate' =
+			
+			CALCULATE ( [Low CSAT Rate], Customer_Service[Issue_Type] = "Wholesale inquiry" )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 942f7a06-4005-4c19-a188-5d68d3c459c1
+
+	measure 'Wholesale Unresolved Rate' =
+			
+			CALCULATE ( [Unresolved Rate], Customer_Service[Issue_Type] = "Wholesale inquiry" )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e19b0eb2-34ae-4823-9112-469aa0e80091
+
+	measure 'Wholesale Avg First Response' =
+			
+			CALCULATE ( [Avg First Response Min], Customer_Service[Issue_Type] = "Wholesale inquiry" )
+		lineageTag: b8c907ae-aa03-4b9d-835b-d1103711a059
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Wholesale Responded Under 15 Min' =
+			
+			CALCULATE ( [Wholesale Inquiries], Customer_Service[First_Response_Minutes] <= 15 )
+		formatString: 0
+		lineageTag: 772a2953-d0ec-4eb0-9262-0ffbf640100f
+
+	measure 'Wholesale Resolved' =
+			
+			CALCULATE ( [Wholesale Inquiries], Customer_Service[Resolved] = "Yes" )
+		formatString: 0
+		lineageTag: 94620130-290a-47c1-9bdc-3cb88e0dc3f2
+
+	measure 'Wholesale Satisfied' =
+			
+			CALCULATE ( [Wholesale Inquiries], Customer_Service[CSAT_1_to_5] >= 4 )
+		formatString: 0
+		lineageTag: 975d6cc4-fa9d-4145-991e-0bbda0aacfaa
+
+	measure 'Return Exchange Rate' = DIVIDE ( [Return Exchange Tickets], [Total Tickets] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f3c7b325-d247-4f4d-aadf-00f1c1a25624
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				  #"Removed Columns"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

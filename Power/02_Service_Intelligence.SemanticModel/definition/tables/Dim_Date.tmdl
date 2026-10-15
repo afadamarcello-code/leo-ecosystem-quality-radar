@@ -1,0 +1,85 @@
+table Dim_Date
+	lineageTag: ad4cb54d-ebe6-4a10-86bf-c168c8bc7225
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: c8c20414-0068-428e-bbc9-06bbe7ed3c4b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: a275d317-6a95-4b44-a573-c16451ddc5df
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 6f087b55-9cfd-4ea6-a5cd-e3418e1c5426
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: e6a32d14-7776-41ae-bb53-835f9a979127
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Year'
+		lineageTag: 0edcda76-d8d4-46eb-8d21-02f14fdb1dc7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Year]
+		sortByColumn: 'Month Year Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Year Sort'
+		formatString: 0
+		lineageTag: 7ca75405-0996-4d96-b129-a9d93ea44bb0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Year Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 8c90851c-c5da-43c0-8616-ff70cd7a170e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = calculated
+		mode: import
+		source = ```
+				
+				ADDCOLUMNS(
+				    CALENDARAUTO(),
+				 "Year", YEAR([Date]),
+				  "Month Number", MONTH([Date]),
+				  "Month", FORMAT ( [Date], "MMM" ),
+				  "Month Year", FORMAT ( [Date], "MMM YYYY" ),
+				  "Month Year Sort", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+				    "Quarter", "Q" & FORMAT ( [Date], "Q" )
+				)
+				
+				```
+
+	annotation PBI_Id = 438d1021415544489c03deb15549b617
+

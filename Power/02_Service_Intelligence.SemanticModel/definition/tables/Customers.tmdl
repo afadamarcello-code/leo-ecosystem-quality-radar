@@ -1,0 +1,88 @@
+table Customers
+	lineageTag: 43dc480e-4893-450f-b04e-868a2fd7f601
+
+	column Customer_ID
+		dataType: string
+		lineageTag: b7603730-8f29-4e21-8a4e-4f75fec04b20
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Type
+		dataType: string
+		lineageTag: 096e73ef-dda9-4051-a40c-65bd545f8748
+		summarizeBy: none
+		sourceColumn: Customer_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Governorate
+		dataType: string
+		lineageTag: 3cbef7d3-6484-46e8-8e02-169073b73486
+		summarizeBy: none
+		sourceColumn: Governorate
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age_Band
+		dataType: string
+		lineageTag: 86f90d35-ea25-4b84-a945-2a16f6f6732e
+		summarizeBy: none
+		sourceColumn: Age_Band
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 1dc00458-e603-4759-90b0-a95e3ac86f4c
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Join_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cac4cc45-f811-4904-bbe1-4600ca0f6758
+		summarizeBy: none
+		sourceColumn: Join_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Acquisition_Channel
+		dataType: string
+		lineageTag: 17c094a6-f5d3-48f7-b235-f00e6ab54785
+		summarizeBy: none
+		sourceColumn: Acquisition_Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Consent_Status
+		dataType: string
+		lineageTag: db38f23e-2635-4361-ab56-e0afb8e4b152
+		summarizeBy: none
+		sourceColumn: Consent_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data_Class
+		dataType: string
+		lineageTag: 8bfa1bd6-b101-4e25-b2f5-cf086557c820
+		summarizeBy: none
+		sourceColumn: Data_Class
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\HVIA\elsharnouby-ai-project\Data\Raw\Customers.csv"), [Delimiter = ",", Columns = 9, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Customer_ID", type text}, {"Customer_Type", type text}, {"Governorate", type text}, {"Age_Band", type text}, {"Gender", type text}, {"Join_Date", type date}, {"Acquisition_Channel", type text}, {"Consent_Status", type text}, {"Data_Class", type text}})
+				in
+				  #"Changed column type"
+

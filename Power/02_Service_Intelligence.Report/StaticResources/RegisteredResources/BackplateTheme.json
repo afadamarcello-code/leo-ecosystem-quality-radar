@@ -1,0 +1,87 @@
+{
+  "name": "BackplateTheme.json",
+  "dataColors": [
+    "#33299e",
+    "#675eb6",
+    "#635bff",
+    "#9b93f7",
+    "#d0782a",
+    "#b3acf7",
+    "#c6c2fb",
+    "#ecbd92"
+  ],
+  "firstLevelElements": "#1d1a50",
+  "secondLevelElements": "#6c6a8d",
+  "thirdLevelElements": "#bdbccc",
+  "fourthLevelElements": "#9897af",
+  "background": "#ffffff",
+  "secondaryBackground": "#e4e2f0",
+  "tableAccent": "#635bff",
+  "foreground": "#1d1a50",
+  "foregroundNeutralSecondary": "#6c6a8d",
+  "foregroundNeutralTertiary": "#bdbccc",
+  "backgroundLight": "#e4e2f0",
+  "backgroundNeutral": "#9897af",
+  "bad": "#d0782a",
+  "good": "#635bff",
+  "neutral": "#675eb6",
+  "maximum": "#635bff",
+  "center": "#f0eff5",
+  "minimum": "#d0782a",
+  "textClasses": {
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 24,
+      "color": "#1d1a50"
+    },
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 14,
+      "color": "#1d1a50"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 14,
+      "color": "#1d1a50"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 12,
+      "color": "#6c6a8d"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": false
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#f0eff5"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
