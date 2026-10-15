@@ -1,0 +1,11 @@
+,Value
+rows,30000
+columns,9
+unique_customer_ids,30000
+duplicate_customer_ids,0
+missing_join_date,0
+join_date_min,2023-10-01 00:00:00
+join_date_max,2026-09-30 00:00:00
+future_join_dates,0
+retail_count,28349
+wholesale_count,1651

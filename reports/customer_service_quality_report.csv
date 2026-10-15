@@ -1,0 +1,20 @@
+,Value
+rows,6500
+columns,13
+unique_ticket_ids,6500
+duplicate_ticket_ids,0
+missing_open_date,0
+date_min,2023-10-01 00:00:00
+date_max,2026-09-30 00:00:00
+future_open_dates,0
+csat_min,1
+csat_max,5
+csat_missing,0
+negative_first_response,0
+negative_resolution_hours,0
+first_response_above_60_minutes,23
+resolution_above_72_hours,119
+unresolved_count,320
+unresolved_rate,4.92
+low_csat_count,1701
+low_csat_rate,26.17

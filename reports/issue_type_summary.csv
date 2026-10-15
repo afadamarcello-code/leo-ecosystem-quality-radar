@@ -1,0 +1,9 @@
+Issue_Type,Ticket_Count,Avg_CSAT,Low_CSAT_Rate,Unresolved_Rate,Avg_First_Response_Minutes,Avg_Resolution_Hours
+Size guidance,1347,3.98,0.26,0.06,11.69,17.73
+Order status,1273,4.02,0.26,0.04,11.16,16.79
+General product question,1082,3.97,0.27,0.05,11.54,17.81
+Exchange request,692,4.02,0.27,0.05,11.99,17.68
+Product quality,668,3.97,0.28,0.06,11.46,18.28
+Wholesale inquiry,599,4.04,0.24,0.03,11.64,16.94
+Return request,526,3.99,0.25,0.04,11.32,16.78
+Payment,313,4.02,0.26,0.05,11.13,17.34
