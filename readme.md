@@ -101,6 +101,9 @@ streamlit run app.py
 Open the **🔮 AI Forecast** tab, expand the uploader, drop
 `Inventory_History.csv` — watch every dependent tab recalculate.
 
+
+** Live demo:** https://leo-ecosystem-quality-radar.streamlit.app/
+
 ## 🛠️ Tech stack
 Python · Pandas · Scikit-learn · Streamlit · Power BI (DAX, PBIP) · joblib · Git
 
